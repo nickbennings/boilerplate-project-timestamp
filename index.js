@@ -9,10 +9,11 @@ app.use(cors());
 // Route for parsing dates and returning JSON responses
 app.get('/api/timestamp/:date_string?', (req, res) => {
   let dateString = req.params.date_string;
-  
-  // If dateString is not provided, use current date
+
+  // If dateString is empty, use current date
   if (!dateString) {
-    dateString = new Date();
+    const date = new Date();
+    return res.json({ unix: date.getTime(), utc: date.toUTCString() });
   }
 
   // Parse the date
@@ -32,9 +33,9 @@ app.get('/api/timestamp/:date_string?', (req, res) => {
   res.json({ unix: date.getTime(), utc: date.toUTCString() });
 });
 
-// Define a route handler for the root URL ("/")
+// Route handler for the root URL ("/")
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('Timestamp Microservice is running!');
 });
 
 // Listen on specified port
