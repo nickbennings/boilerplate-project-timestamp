@@ -1,32 +1,39 @@
-// index.js
-// where your node app starts
-
 // init project
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-// enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
-// so that your API is remotely testable by FCC 
-var cors = require('cors');
-app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
+// enable CORS
+const cors = require('cors');
+app.use(cors());
 
-// http://expressjs.com/en/starter/static-files.html
-app.use(express.static('public'));
+// Route for parsing dates and returning JSON responses
+app.get('/api/timestamp/:date_string?', (req, res) => {
+  let dateString = req.params.date_string;
+  
+  // If dateString is not provided, use current date
+  if (!dateString) {
+    dateString = new Date();
+  }
 
-// http://expressjs.com/en/starter/basic-routing.html
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + '/views/index.html');
+  // Parse the date
+  let date;
+  if (isNaN(dateString)) {
+    date = new Date(dateString);
+  } else {
+    date = new Date(parseInt(dateString));
+  }
+
+  // Check if date is invalid
+  if (isNaN(date.getTime())) {
+    return res.json({ error: "Invalid Date" });
+  }
+
+  // Return JSON response with Unix timestamp and UTC date
+  res.json({ unix: date.getTime(), utc: date.toUTCString() });
 });
 
-
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
-});
-
-
-
-// Listen on port set in environment variable or default to 3000
-var listener = app.listen(process.env.PORT || 3000, function () {
-  console.log('Your app is listening on port ' + listener.address().port);
+// Listen on specified port
+app.listen(PORT, () => {
+  console.log(`Your app is listening on port ${PORT}`);
 });
