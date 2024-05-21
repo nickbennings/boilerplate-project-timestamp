@@ -6,20 +6,12 @@ const PORT = process.env.PORT || 3000;
 const cors = require('cors');
 app.use(cors({ optionsSuccessStatus: 200 }));
 
-// Serve static files
-app.use(express.static('public'));
-
-// Route for the root URL
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + '/views/index.html');
-});
-
-// Route for the timestamp API
-app.get("/api/:date?", (req, res) => {
-  let dateString = req.params.date;
+// Route for parsing dates and returning JSON responses
+app.get('/api/:date_string?', (req, res) => {
+  let dateString = req.params.date_string;
   let date;
 
-  // If dateString is not provided, use current date
+  // If dateString is empty, use current date
   if (!dateString) {
     date = new Date();
   } else {
