@@ -27,6 +27,11 @@ app.get('/api/timestamp/:date_string?', (req, res) => {
   }
 });
 
+// Default route handler for requests to the root URL
+app.get('/', (req, res) => {
+  res.send('Welcome to the Timestamp Microservice!');
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
