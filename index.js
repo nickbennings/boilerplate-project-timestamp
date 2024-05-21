@@ -1,4 +1,3 @@
-// init project
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,6 +30,11 @@ app.get('/api/timestamp/:date_string?', (req, res) => {
 
   // Return JSON response with Unix timestamp and UTC date
   res.json({ unix: date.getTime(), utc: date.toUTCString() });
+});
+
+// Define a route handler for the root URL ("/")
+app.get('/', (req, res) => {
+  res.send('Hello World!');
 });
 
 // Listen on specified port
