@@ -32,6 +32,11 @@ app.get('/api/:date_string?', (req, res) => {
   res.json({ unix: date.getTime(), utc: date.toUTCString() });
 });
 
+// Default route for root path
+app.get('/', (req, res) => {
+  res.send('Welcome to the date parser API! Use /api/:date_string to parse dates.');
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Your app is listening on port ${PORT}`);
